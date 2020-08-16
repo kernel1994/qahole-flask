@@ -4,13 +4,14 @@
 就不写简介了（方丈别打我啊）
 
 ## Run
-on Windows CMD:
-`
-set FLASK_APP=app
-set FLASK_ENV=development
-flask run
-`
-Now head over to `http://127.0.0.1:5000/`
+- Web API(Flask project)
+    on Windows CMD, in backend:
+    ```
+    set FLASK_APP=api
+    set FLASK_ENV=development
+    flask run
+    ```
+Now head over to `http://127.0.0.1:5000/api/*`
 
 ## TODO
 - [ ] 前后端分离
@@ -23,5 +24,9 @@ Now head over to `http://127.0.0.1:5000/`
 - [ ] ORM
 
 ## See Also
-- [Flask](https://flask.palletsprojects.com/en/1.1.x/) - [Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/)
-- [Flask 之旅](https://spacewander.github.io/explore-flask-zh/)
+- Backend
+    - [Flask](https://flask.palletsprojects.com/en/1.1.x/) - [Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/)
+    - [Flask 之旅](https://spacewander.github.io/explore-flask-zh/)
+    - [Flask-RESTful](https://flask-restful.readthedocs.io/en/latest/index.html)
+- Frontend
+    - [Vue](https://vuejs.org/)

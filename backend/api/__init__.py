@@ -1,9 +1,10 @@
 import os
 
 from flask import Flask
+import flask_restful as restful
 
-from . import db
-from .views import qahole
+from api.common import db
+from api.resources.qahole import QaHole
 
 
 def create_app(test_config=None):
@@ -13,6 +14,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'data-sqlite3.db'),
     )
+
+    api = restful.Api(app, prefix='/api')
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -29,6 +32,7 @@ def create_app(test_config=None):
 
     db.init(app)
 
-    app.register_blueprint(qahole.qh)
+    # Resourceful Routing
+    api.add_resource(QaHole, '/qahole', '/qahole/<int:comment_id>')
 
     return app
