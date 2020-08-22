@@ -5,6 +5,8 @@ import flask_restful as restful
 
 from api.common import db
 from api.resources.qahole import QaHole
+from api.resources.qa import Qa
+from api.resources.treehole import Treehole
 
 
 def create_app(test_config=None):
@@ -34,5 +36,7 @@ def create_app(test_config=None):
 
     # Resourceful Routing
     api.add_resource(QaHole, '/qahole', '/qahole/<int:comment_id>')
+    api.add_resource(Qa, '/qa', '/qa/<int:comment_id>')
+    api.add_resource(Treehole, '/treehole', '/treehole/<int:comment_id>')
 
     return app

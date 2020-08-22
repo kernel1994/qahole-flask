@@ -24,10 +24,10 @@ class QaHole(restful.Resource):
             sql = 'SELECT * FROM qahole WHERE comment_id = (?)'
             data = self.db.execute(sql, (comment_id,)).fetchall()
         else:
-            sql = 'SELECT * FROM qahole ORDER BY comment_id DESC LIMIT 100'
+            sql = 'SELECT * FROM qahole ORDER BY comment_id DESC LIMIT 20'
             data = self.db.execute(sql).fetchall()
 
         return {
             'code': 0,
-            'data': [dict(x) for x in data]
+            'data': data
         }
