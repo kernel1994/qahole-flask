@@ -21,46 +21,49 @@
     Listen on `http://127.0.0.1:8081`
 
 - Nginx
-    add in `conf/nginx.conf`:
-    ```
-    upstream webpage {
-        server localhost:8081;
-    }
+    <details>
+      <summary>add in `conf/nginx.conf`</summary>
+      ```
+      upstream webpage {
+          server localhost:8081;
+      }
 
-    upstream webapi {
-        server localhost:5000;
-    }
+      upstream webapi {
+          server localhost:5000;
+      }
 
-    server {
-        listen       8080;
-        server_name  localhost;
+      server {
+          listen       8080;
+          server_name  localhost;
 
-        #charset koi8-r;
+          #charset koi8-r;
 
-        #access_log  logs/host.access.log  main;
+          #access_log  logs/host.access.log  main;
 
-        location / {
-            proxy_pass http://webpage;
+          location / {
+              proxy_pass http://webpage;
 
-            proxy_set_header Host            $host;
-            proxy_set_header X-Real-IP       $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
+              proxy_set_header Host            $host;
+              proxy_set_header X-Real-IP       $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          }
 
-        location /api/ {
-            proxy_pass http://webapi;
-        }
+          location /api/ {
+              proxy_pass http://webapi;
+          }
 
-        #error_page  404              /404.html;
+          #error_page  404              /404.html;
 
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-    }
-    ```
+          # redirect server error pages to the static page /50x.html
+          #
+          error_page   500 502 503 504  /50x.html;
+          location = /50x.html {
+              root   html;
+          }
+      }
+      ```
+    </details>
+
     on Windows CMD:
     ```
     start nginx

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-list">
     <ul>
       <li v-for="item in items" :key="item.comment_id">
 
@@ -14,9 +14,16 @@
           <div class="ox">
             <span class="oo"><span style="color: red;">oo</span> {{ item.oo }} | </span>
             <span class="xx"><span style="color: blue;">xx</span> {{ item.xx }} | </span>
-            <span>吐槽 {{ item.ntucao }}</span>
+            <span>
+              <a href="javascript:void(0)" @click="tucao(item.comment_id)">吐槽 {{ item.ntucao }}</a>
+            </span>
           </div>
         </div>
+
+        <!-- TODO: tucao list -->
+        <div :data-comment-tucao-id="item.comment_id" class="tucao-list">
+        </div>
+
       </li>
     </ul>
   </div>
@@ -27,13 +34,33 @@ export default {
   name: 'QaHole',
   data () {
     return {
-      items: null
+      items: null,
+      tucaos: null
     }
   },
 
   methods: {
     handleNewLine (str) {
       return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    },
+
+    tucao (commentParent) {
+      let v = this
+
+      let url = 'http://localhost:8080/api/tucao/' + commentParent
+      this.$axios
+        .get(url)
+        .then(function getQaholes (response) {
+          let data = null
+
+          if (response.status === 200) {
+            data = response.data
+
+            if (data.code === 0) {
+              v.tucaos = data.data
+            }
+          }
+        })
     }
   },
 
@@ -48,10 +75,10 @@ export default {
 
         if (response.status === 200) {
           data = response.data
-        }
 
-        if (data.code === 0) {
-          v.items = data.data
+          if (data.code === 0) {
+            v.items = data.data
+          }
         }
       })
   }
@@ -60,8 +87,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.view-list {
+  margin-top: 55px;
+}
+
 li {
   display: flex;
+  flex-wrap: wrap;
 
   text-align: left;
   padding: 15px 10px;
@@ -72,7 +104,7 @@ li {
   display: flex;
   flex-direction: column;
 
-  min-width: 150px;
+  width: 150px;
   margin-right: 10px;
 }
 
@@ -89,7 +121,7 @@ li {
   display: flex;
   flex-direction: column;
 
-  min-width: 580px;
+  width: 620px;
 }
 
 .comment-text > .text {

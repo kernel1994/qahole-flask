@@ -9,6 +9,7 @@
 }
 
 .nav ul {
+  margin: 0;
   padding-left: 0px;
 }
 
@@ -23,7 +24,7 @@
 }
 
 .nav-link:hover, .nav-link.current {
-  border-bottom: 3px solid #42b983;
+  border-bottom: 3px solid #35495e;
 }
 
 .nav-link {

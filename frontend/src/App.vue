@@ -1,18 +1,23 @@
 <template>
-  <div id="app" class='wrapper'>
-    <h4>Qa & Treehole</h4>
-    <div>
-      <qahole-nav></qahole-nav>
-    </div>
+  <div id="app">
+    <header class="header">
+      <nav class="inner">
+        <div><img class="logo" src="./assets/logo-48.png" alt="logo"></div>
+        <qahole-nav></qahole-nav>
+      </nav>
+    </header>
 
-    <router-view :key="$route.path"/>
+    <div class='wrapper'>
+      <router-view :key="$route.path"/>
 
-    <div v-if="isLoading">
-      <div class="lds-ellipsis">
-        <div></div><div></div><div></div><div></div>
+      <div class="spinner" v-if="isLoading">
+        <div class="lds-ellipsis">
+          <div></div><div></div><div></div><div></div>
+        </div>
+        <div>Loading...</div>
       </div>
-      <div>Loading...</div>
     </div>
+
   </div>
 </template>
 
@@ -62,22 +67,58 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #41b883;
+  position: fixed;
+  z-index: 999;
+  height: 55px;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.header .inner {
+  max-width: 800px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 10px 5px;
+}
+
+.header .inner div {
+  display: inline-block;
+}
+
+.logo {
+  width: 24px;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.header .github {
+  color: #fff;
+  font-size: 0.9em;
+  margin: 0;
+  float: right;
 }
 
 .wrapper {
-  width: 100%;
-  max-width: 50rem;
+  max-width: 800px;
   margin: 0 auto;
+  position: relative;
 }
 
 /** https://loading.io/css/ **/
+.spinner {
+  margin: 0 auto;
+  text-align: center;
+}
+
 .lds-ellipsis {
   display: inline-block;
   position: relative;
