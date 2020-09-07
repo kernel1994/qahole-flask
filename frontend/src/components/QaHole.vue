@@ -1,27 +1,31 @@
 <template>
   <div class="view-list">
     <ul>
-      <li v-for="item in items" :key="item.comment_id">
+      <li v-for="comment in comments" :key="comment.comment_id">
 
-        <div class="comment-author">
-          <div class="author">{{ item.author }}</div>
-          <div class="cid"># {{ item.comment_id }}</div>
-          <div class="time">{{ item.comment_time }}</div>
-        </div>
+        <div class="comment">
+          <div class="comment-author">
+            <div class="author">{{ comment.author }}</div>
+            <div class="cid"># {{ comment.comment_id }}</div>
+            <div class="time">{{ comment.comment_time }}</div>
+          </div>
 
-        <div class="comment-text">
-          <div class="text" v-html="handleNewLine(item.comment_text)"></div>
-          <div class="ox">
-            <span class="oo"><span style="color: red;">oo</span> {{ item.oo }} | </span>
-            <span class="xx"><span style="color: blue;">xx</span> {{ item.xx }} | </span>
-            <span>
-              <a href="javascript:void(0)" @click="tucao(item.comment_id)">吐槽 {{ item.ntucao }}</a>
-            </span>
+          <div class="comment-text">
+            <div class="text" v-html="handleNewLine(comment.comment_text)"></div>
+            <div class="ox">
+              <span class="oo"><span style="color: red;">oo</span> {{ comment.oo }} | </span>
+              <span class="xx"><span style="color: blue;">xx</span> {{ comment.xx }} | </span>
+              <span>
+                <a href="javascript:void(0)" @click="tucao(comment.comment_id)">吐槽 {{ comment.ntucao }}</a>
+              </span>
+            </div>
           </div>
         </div>
 
-        <!-- TODO: tucao list -->
-        <div :data-comment-tucao-id="item.comment_id" class="tucao-list">
+        <div class="tucao">
+          <div :data-comment-tucao-id="comment.comment_id" class="tucao-list" showed="false">
+            <div></div>
+          </div>
         </div>
 
       </li>
@@ -30,11 +34,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import Tucao from '@/components/Tucao'
+
 export default {
   name: 'QaHole',
   data () {
     return {
-      items: null,
+      comments: null,
       tucaos: null
     }
   },
@@ -44,23 +51,24 @@ export default {
       return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
     },
 
-    tucao (commentParent) {
-      let v = this
+    tucao (commentParentId) {
+      let parent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
+      let showed = parent.getAttribute('showed')
 
-      let url = 'http://localhost:8080/api/tucao/' + commentParent
-      this.$axios
-        .get(url)
-        .then(function getQaholes (response) {
-          let data = null
+      if (showed === 'true') {
+        parent.querySelector('div').innerHTML = ''
+        parent.setAttribute('showed', false)
+        return
+      }
 
-          if (response.status === 200) {
-            data = response.data
+      let TucaoComp = Vue.extend({
+        components: { Tucao },
+        template: `<Tucao commentParentId="${commentParentId}"></Tucao>`
+      })
 
-            if (data.code === 0) {
-              v.tucaos = data.data
-            }
-          }
-        })
+      new TucaoComp().$mount(`div[data-comment-tucao-id='${commentParentId}'] > div`)
+
+      parent.setAttribute('showed', true)
     }
   },
 
@@ -77,7 +85,7 @@ export default {
           data = response.data
 
           if (data.code === 0) {
-            v.items = data.data
+            v.comments = data.data
           }
         }
       })
@@ -92,8 +100,11 @@ export default {
 }
 
 li {
+  list-style-type: none;
+}
+
+.comment {
   display: flex;
-  flex-wrap: wrap;
 
   text-align: left;
   padding: 15px 10px;
@@ -131,5 +142,10 @@ li {
 .comment-text > .ox {
   padding-top: 10px;
   text-align: right;
+}
+
+.ox a {
+  color: #333;
+  text-decoration: none;
 }
 </style>
