@@ -1,29 +1,38 @@
 <template>
-  <div class="tucao-list">
-    <ul>
-      <li v-for="tucao in tucaos" :key="tucao.comment_id">
+  <div>
+    <spinner></spinner>
 
-        <div class="tucao-author">
-          <div class="author">{{ tucao.comment_author }}</div>
-          <div class="cid"># {{ tucao.comment_id }}</div>
-          <div class="time">{{ tucao.comment_date }}</div>
-        </div>
+    <div class="tucao-list">
+      <ul>
+        <li v-for="tucao in tucaos" :key="tucao.comment_id">
 
-        <div class="tucao-text">
-          <div class="text" v-html="handleNewLine(tucao.comment_content)"></div>
-          <div class="ox">
-            <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
-            <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
+          <div class="tucao-author">
+            <div class="author">{{ tucao.comment_author }}</div>
+            <div class="cid"># {{ tucao.comment_id }}</div>
+            <div class="time">{{ tucao.comment_date }}</div>
           </div>
-        </div>
-      </li>
-    </ul>
+
+          <div class="tucao-text">
+            <div class="text" v-html="handleNewLine(tucao.comment_content)"></div>
+            <div class="ox">
+              <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
+              <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
+
 export default {
   name: 'Tucao',
+  components: {
+    'spinner': Spinner
+  },
   data () {
     return {
       tucaos: null
@@ -74,6 +83,7 @@ ul {
   width: 650px;
   background-color: #f2f2f2;
   border-color: #d9d9d9;
+  padding: 0 10px;
 }
 
 li {

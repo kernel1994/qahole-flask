@@ -2,102 +2,75 @@
   <div id="app">
     <header class="header">
       <nav class="inner">
-        <div><img class="logo" src="./assets/logo-48.png" alt="logo"></div>
-        <qahole-nav></qahole-nav>
+        <img class="logo" src="./assets/logo-2018.gif" alt="logo">
+        <qahole-nav class="qahole-nav"></qahole-nav>
+        <input type="text" name="search" placeholder="搜索" class="search">
       </nav>
     </header>
 
     <div class='wrapper'>
       <router-view :key="$route.path"/>
 
-      <div class="spinner" v-if="isLoading">
-        <div class="lds-ellipsis">
-          <div></div><div></div><div></div><div></div>
-        </div>
-        <div>Loading...</div>
-      </div>
+      <spinner></spinner>
     </div>
 
   </div>
 </template>
 
 <script>
-import qaholeNav from './components/Nav.vue'
+import Spinner from '@/components/Spinner'
+import qaholeNav from '@/components/Nav.vue'
 
 export default {
   name: 'App',
   components: {
-    'qahole-nav': qaholeNav
-  },
-  data () {
-    return {
-      refCount: 0,
-      isLoading: false
-    }
-  },
-  methods: {
-    setLoading (isLoading) {
-      if (isLoading) {
-        this.refCount++
-        this.isLoading = true
-      } else if (this.refCount > 0) {
-        this.refCount--
-        this.isLoading = (this.refCount > 0)
-      }
-    }
-  },
-  created () {
-    this.$axios.interceptors.request.use((config) => {
-      this.setLoading(true)
-      return config
-    }, (error) => {
-      this.setLoading(false)
-      return Promise.reject(error)
-    })
-
-    this.$axios.interceptors.response.use((response) => {
-      this.setLoading(false)
-      return response
-    }, (error) => {
-      this.setLoading(false)
-      return Promise.reject(error)
-    })
+    'qahole-nav': qaholeNav,
+    'spinner': Spinner
   }
 }
 </script>
 
 <style>
+body {
+  background-color: #f2f3f5;
+}
+
 ul {
   margin: 0;
   padding: 0;
 }
 
 .header {
-  background-color: #41b883;
   position: fixed;
-  z-index: 999;
-  height: 55px;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 999;
+  height: 55px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
 }
 
 .header .inner {
+  display: flex;
+  align-items: center;
+
   max-width: 800px;
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 10px 5px;
+  padding: 7.5px 0;
 }
 
-.header .inner div {
-  display: inline-block;
+.inner .qahole-nav {
+  flex-grow: 1;
 }
 
 .logo {
-  width: 24px;
+  width: 64px;
   margin-right: 10px;
   display: inline-block;
   vertical-align: middle;
+  margin-bottom: 10px;
 }
 
 .header .github {
@@ -113,65 +86,15 @@ ul {
   position: relative;
 }
 
-/** https://loading.io/css/ **/
-.spinner {
-  margin: 0 auto;
-  text-align: center;
-}
-
-.lds-ellipsis {
-  display: inline-block;
-  position: relative;
-  width: 64px;
-  height: 64px;
-}
-.lds-ellipsis div {
-  position: absolute;
-  top: 27px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #ddd;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
-}
-.lds-ellipsis div:nth-child(1) {
-  left: 6px;
-  animation: lds-ellipsis1 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(2) {
-  left: 6px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(3) {
-  left: 26px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(4) {
-  left: 45px;
-  animation: lds-ellipsis3 0.6s infinite;
-}
-@keyframes lds-ellipsis1 {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes lds-ellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes lds-ellipsis2 {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(19px, 0);
-  }
+.search {
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  box-sizing: border-box;
+  color: #606266;
+  height: 25px;
+  outline: none;
+  padding: 0 15px;
+  transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 </style>

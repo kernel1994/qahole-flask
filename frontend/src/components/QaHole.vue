@@ -96,11 +96,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .view-list {
-  margin-top: 55px;
+  margin-top: 70px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all .5s cubic-bezier(.55, 0, .1, 1);
 }
 
 li {
   list-style-type: none;
+  border-bottom: 1px dashed #777;
 }
 
 .comment {
@@ -108,7 +113,6 @@ li {
 
   text-align: left;
   padding: 15px 10px;
-  border-bottom: 1px dashed #777;
 }
 
 .comment-author {
@@ -147,5 +151,9 @@ li {
 .ox a {
   color: #333;
   text-decoration: none;
+}
+
+.tucao {
+  margin-bottom: 10px;
 }
 </style>
