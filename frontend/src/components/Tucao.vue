@@ -13,7 +13,7 @@
           </div>
 
           <div class="tucao-text">
-            <div class="text" v-html="handleNewLine(tucao.comment_content)"></div>
+            <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
             <div class="ox">
               <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
               <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
@@ -42,12 +42,6 @@ export default {
   props: {
     commentParentId: {
       type: String
-    }
-  },
-
-  methods: {
-    handleNewLine (str) {
-      return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
     }
   },
 

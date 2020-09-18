@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import QaHole from '@/components/QaHole'
+import QaHoleSolo from '@/components/QaHoleSolo'
 
 Vue.use(Router)
 
@@ -17,6 +18,12 @@ export default new Router({
       path: '/qahole',
       name: 'QaHole',
       component: QaHole
+    },
+
+    {
+      path: '/qahole/:id',
+      name: 'QaHoleSolo',
+      component: QaHoleSolo
     },
 
     {

@@ -6,12 +6,14 @@
         <div class="comment">
           <div class="comment-author">
             <div class="author">{{ comment.author }}</div>
-            <div class="cid"># {{ comment.comment_id }}</div>
+            <div class="cid">
+              <a :href="'#/qahole/' + comment.comment_id"># {{ comment.comment_id }}</a>
+            </div>
             <div class="time">{{ comment.comment_time }}</div>
           </div>
 
           <div class="comment-text">
-            <div class="text" v-html="handleNewLine(comment.comment_text)"></div>
+            <div class="text" v-html="$convertNewLine(comment.comment_text)"></div>
             <div class="ox">
               <span class="oo"><span style="color: red;">oo</span> {{ comment.oo }} | </span>
               <span class="xx"><span style="color: blue;">xx</span> {{ comment.xx }} | </span>
@@ -47,10 +49,6 @@ export default {
   },
 
   methods: {
-    handleNewLine (str) {
-      return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
-    },
-
     tucao (commentParentId) {
       let parent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
       let showed = parent.getAttribute('showed')
@@ -105,6 +103,9 @@ export default {
 
 li {
   list-style-type: none;
+}
+
+li:not(:last-child) {
   border-bottom: 1px dashed #777;
 }
 
@@ -155,5 +156,10 @@ li {
 
 .tucao {
   margin-bottom: 10px;
+}
+
+.cid a {
+  color: #333;
+  text-decoration: none;
 }
 </style>
