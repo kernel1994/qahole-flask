@@ -1,111 +1,124 @@
 <template>
-  <div class="spinner" v-if="isLoading">
-    <div class="lds-ellipsis">
-      <div></div><div></div><div></div><div></div>
-    </div>
-  </div>
+  <transition>
+    <svg class="spinner" :class="{ show: show }" v-show="show" width="44px" height="44px" viewBox="0 0 44 44">
+      <circle class="path" fill="none" stroke-width="4" stroke-linecap="round" cx="22" cy="22" r="20"></circle>
+    </svg>
+  </transition>
 </template>
 
 <script>
 export default {
-  name: 'Spinner',
-  data () {
-    return {
-      refCount: 0,
-      isLoading: false
-    }
-  },
-  methods: {
-    setLoading (isLoading) {
-      if (isLoading) {
-        this.refCount++
-        this.isLoading = true
-      } else if (this.refCount > 0) {
-        this.refCount--
-        this.isLoading = (this.refCount > 0)
-      }
-    }
-  },
-  created () {
-    this.$axios.interceptors.request.use((config) => {
-      this.setLoading(true)
-      return config
-    }, (error) => {
-      this.setLoading(false)
-      return Promise.reject(error)
-    })
-
-    this.$axios.interceptors.response.use((response) => {
-      this.setLoading(false)
-      return response
-    }, (error) => {
-      this.setLoading(false)
-      return Promise.reject(error)
-    })
-  }
+  name: 'spinner',
+  props: ['show']
 }
 </script>
 
-<style scoped>
-/** https://loading.io/css/ **/
+<style>
 .spinner {
-  margin: 0 auto;
-  text-align: center;
+  transition: opacity 0.15s ease;
+  animation: rotator 1.4s linear infinite;
+  animation-play-state: paused;
 }
-
-.lds-ellipsis {
-  display: inline-block;
-  position: relative;
-  width: 64px;
-  height: 64px;
+.spinner.show {
+  animation-play-state: running;
 }
-.lds-ellipsis div {
-  position: absolute;
-  top: 27px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #ddd;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+.spinner.v-enter,
+.spinner.v-leave-active {
+  opacity: 0;
 }
-.lds-ellipsis div:nth-child(1) {
-  left: 6px;
-  animation: lds-ellipsis1 0.6s infinite;
+.spinner.v-enter-active,
+.spinner.v-leave {
+  opacity: 1;
 }
-.lds-ellipsis div:nth-child(2) {
-  left: 6px;
-  animation: lds-ellipsis2 0.6s infinite;
+.spinner .path {
+  stroke: #f60;
+  stroke-dasharray: 126;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 1.4s ease-in-out infinite;
 }
-.lds-ellipsis div:nth-child(3) {
-  left: 26px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(4) {
-  left: 45px;
-  animation: lds-ellipsis3 0.6s infinite;
-}
-@keyframes lds-ellipsis1 {
+@-moz-keyframes rotator {
   0% {
-    transform: scale(0);
+    transform: scale(0.5) rotate(0deg);
   }
   100% {
-    transform: scale(1);
+    transform: scale(0.5) rotate(270deg);
   }
 }
-@keyframes lds-ellipsis3 {
+@-webkit-keyframes rotator {
   0% {
-    transform: scale(1);
+    transform: scale(0.5) rotate(0deg);
   }
   100% {
-    transform: scale(0);
+    transform: scale(0.5) rotate(270deg);
   }
 }
-@keyframes lds-ellipsis2 {
+@-o-keyframes rotator {
   0% {
-    transform: translate(0, 0);
+    transform: scale(0.5) rotate(0deg);
   }
   100% {
-    transform: translate(19px, 0);
+    transform: scale(0.5) rotate(270deg);
+  }
+}
+@keyframes rotator {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+  }
+  100% {
+    transform: scale(0.5) rotate(270deg);
+  }
+}
+@-moz-keyframes dash {
+  0% {
+    stroke-dashoffset: 126;
+  }
+  50% {
+    stroke-dashoffset: 63;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 126;
+    transform: rotate(450deg);
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 126;
+  }
+  50% {
+    stroke-dashoffset: 63;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 126;
+    transform: rotate(450deg);
+  }
+}
+@-o-keyframes dash {
+  0% {
+    stroke-dashoffset: 126;
+  }
+  50% {
+    stroke-dashoffset: 63;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 126;
+    transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 126;
+  }
+  50% {
+    stroke-dashoffset: 63;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 126;
+    transform: rotate(450deg);
   }
 }
 </style>

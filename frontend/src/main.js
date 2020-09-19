@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import ProgressBar from '@/components/ProgressBar.vue'
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
@@ -12,6 +13,10 @@ Vue.config.productionTip = false
 Vue.prototype.$convertNewLine = function (str) {
   return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
 }
+
+// global progress bar
+const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
+document.body.appendChild(bar.$el)
 
 /* eslint-disable no-new */
 new Vue({

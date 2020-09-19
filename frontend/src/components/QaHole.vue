@@ -38,11 +38,18 @@
 <script>
 import Vue from 'vue'
 import Tucao from '@/components/Tucao'
+import Spinner from '@/components/Spinner'
 
 export default {
   name: 'QaHole',
+
+  components: {
+    Spinner
+  },
+
   data () {
     return {
+      loading: true,
       comments: null,
       tucaos: null
     }
@@ -71,19 +78,20 @@ export default {
   },
 
   mounted () {
-    let v = this
-    console.log(this.$route.path)
     let url = 'http://localhost:8080/api' + this.$route.path
+    this.$bar.start()
     this.$axios
       .get(url)
-      .then(function getQaholes (response) {
+      .then((response) => {
         let data = null
 
         if (response.status === 200) {
           data = response.data
 
           if (data.code === 0) {
-            v.comments = data.data
+            this.comments = data.data
+
+            this.$bar.finish()
           }
         }
       })

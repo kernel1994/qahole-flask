@@ -2,31 +2,25 @@
   <div id="app">
     <header class="header">
       <nav class="inner">
-        <img class="logo" src="./assets/logo-2018.gif" alt="logo">
-        <qahole-nav class="qahole-nav"></qahole-nav>
+        <router-link to="/" exact>
+          <img class="logo" src="./assets/logo-2018.gif" alt="logo">
+        </router-link>
+        <router-link to="/qa">问答</router-link>
+        <router-link to="/treehole">树洞</router-link>
         <input type="text" name="search" placeholder="搜索" class="search">
       </nav>
     </header>
 
     <div class='wrapper'>
       <router-view :key="$route.path"/>
-
-      <spinner></spinner>
     </div>
 
   </div>
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
-import qaholeNav from '@/components/Nav.vue'
-
 export default {
-  name: 'App',
-  components: {
-    'qahole-nav': qaholeNav,
-    'spinner': Spinner
-  }
+  name: 'App'
 }
 </script>
 
@@ -52,17 +46,28 @@ ul {
 }
 
 .header .inner {
-  display: flex;
-  align-items: center;
-
   max-width: 800px;
   box-sizing: border-box;
   margin: 0 auto;
   padding: 7.5px 0;
 }
 
-.inner .qahole-nav {
-  flex-grow: 1;
+a {
+  color: #304455;
+  text-decoration: none;
+  margin: 0 0.6em;
+}
+
+.header a:hover:not(:first-child) {
+  border-bottom: 3px solid #41b883;
+}
+
+.header a.router-link-active:not(:first-child) {
+  border-bottom: 3px solid #41b883;
+}
+
+.header a {
+  padding-bottom: 3px;
 }
 
 .logo {
@@ -73,13 +78,6 @@ ul {
   margin-bottom: 10px;
 }
 
-.header .github {
-  color: #fff;
-  font-size: 0.9em;
-  margin: 0;
-  float: right;
-}
-
 .wrapper {
   max-width: 800px;
   margin: 0 auto;
@@ -87,14 +85,19 @@ ul {
 }
 
 .search {
-  cursor: pointer;
+  float: right;
+
+  margin-top: 5px;
+  padding: 0 15px;
+
   border-radius: 4px;
   border: 1px solid #dcdfe6;
+
+  height: 25px;
   box-sizing: border-box;
   color: #606266;
-  height: 25px;
+  cursor: pointer;
   outline: none;
-  padding: 0 15px;
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 </style>

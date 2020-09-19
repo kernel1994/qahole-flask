@@ -57,20 +57,21 @@ export default {
   },
 
   mounted () {
-    let v = this
-
     let url = 'http://localhost:8080/api' + this.$route.path
+    this.$bar.start()
     this.$axios
       .get(url)
-      .then(function getQahole (response) {
+      .then((response) => {
         let data = null
 
         if (response.status === 200) {
           data = response.data
 
           if (data.code === 0) {
-            v.comment = data.comment
-            v.tucaos = data.tucaos
+            this.comment = data.comment
+            this.tucaos = data.tucaos
+
+            this.$bar.finish()
           }
         }
       })
@@ -154,7 +155,8 @@ li:not(:last-child) {
 }
 
 .tucao-author {
-  min-width: 100px;
+  min-width: 120px;
+  max-width: 120px;
   margin-right: 10px;
 }
 
