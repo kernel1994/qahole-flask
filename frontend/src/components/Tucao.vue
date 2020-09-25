@@ -1,68 +1,30 @@
 <template>
-  <div>
-    <spinner></spinner>
+  <div class="tucao-list">
+    <ul>
+      <li v-for="tucao in tucaos" :key="tucao.comment_id">
 
-    <div class="tucao-list">
-      <ul>
-        <li v-for="tucao in tucaos" :key="tucao.comment_id">
+        <div class="tucao-author">
+          <div class="author">{{ tucao.comment_author }}</div>
+          <div class="cid"># {{ tucao.comment_id }}</div>
+          <div class="time">{{ tucao.comment_date }}</div>
+        </div>
 
-          <div class="tucao-author">
-            <div class="author">{{ tucao.comment_author }}</div>
-            <div class="cid"># {{ tucao.comment_id }}</div>
-            <div class="time">{{ tucao.comment_date }}</div>
+        <div class="tucao-text">
+          <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
+          <div class="ox">
+            <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
+            <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
           </div>
-
-          <div class="tucao-text">
-            <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
-            <div class="ox">
-              <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
-              <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
-
 export default {
   name: 'Tucao',
-  components: {
-    'spinner': Spinner
-  },
-  data () {
-    return {
-      tucaos: null
-    }
-  },
-
-  props: {
-    commentParentId: {
-      type: String
-    }
-  },
-
-  mounted () {
-    let v = this
-
-    let url = 'http://localhost:8080/api/tucao/' + v.commentParentId
-    this.$axios
-      .get(url)
-      .then(function getQaholes (response) {
-        let data = null
-
-        if (response.status === 200) {
-          data = response.data
-
-          if (data.code === 0) {
-            v.tucaos = data.data
-          }
-        }
-      })
-  }
+  props: ['tucaos']
 }
 </script>
 

@@ -15,6 +15,9 @@ export default {
 
 <style>
 .spinner {
+  display: inline-block;
+  margin: -15px 0;
+
   transition: opacity 0.15s ease;
   animation: rotator 1.4s linear infinite;
   animation-play-state: paused;

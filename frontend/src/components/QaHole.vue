@@ -20,13 +20,16 @@
               <span>
                 <a href="javascript:void(0)" @click="tucao(comment.comment_id)">吐槽 {{ comment.ntucao }}</a>
               </span>
+              <span :data-comment-tucao-id="comment.comment_id">
+                <!-- spinner mounted here -->
+              </span>
             </div>
           </div>
         </div>
 
         <div class="tucao">
           <div :data-comment-tucao-id="comment.comment_id" class="tucao-list" showed="false">
-            <div></div>
+            <!-- tucao list mounted here -->
           </div>
         </div>
 
@@ -44,6 +47,7 @@ export default {
   name: 'QaHole',
 
   components: {
+    Tucao,
     Spinner
   },
 
@@ -57,23 +61,57 @@ export default {
 
   methods: {
     tucao (commentParentId) {
-      let parent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
-      let showed = parent.getAttribute('showed')
+      let tucaoParent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
+      let spinnerParent = document.querySelector(`span[data-comment-tucao-id='${commentParentId}']`)
+      let showed = tucaoParent.getAttribute('showed')
 
       if (showed === 'true') {
-        parent.querySelector('div').innerHTML = ''
-        parent.setAttribute('showed', false)
+        // TODO: 更好的销毁组件的方式
+        tucaoParent.removeChild(tucaoParent.firstChild)
+        tucaoParent.setAttribute('showed', false)
         return
       }
 
-      let TucaoComp = Vue.extend({
-        components: { Tucao },
-        template: `<Tucao commentParentId="${commentParentId}"></Tucao>`
+      // display spinner
+      let SpinnerComp = Vue.extend(Spinner)
+
+      let spinnerInstance = new SpinnerComp({
+        propsData: {
+          show: true
+        }
       })
 
-      new TucaoComp().$mount(`div[data-comment-tucao-id='${commentParentId}'] > div`)
+      spinnerInstance.$mount()
+      spinnerParent.appendChild(spinnerInstance.$el)
+      // spinner displayed
 
-      parent.setAttribute('showed', true)
+      let url = 'http://localhost:8080/api/tucao/' + commentParentId
+      this.$axios
+        .get(url)
+        .then(response => {
+          if (response.status === 200) {
+            let data = response.data
+
+            if (data.code === 0) {
+              let TucaoComp = Vue.extend(Tucao)
+
+              let tucaoInstance = new TucaoComp({
+                propsData: {
+                  tucaos: data.data
+                }
+              })
+
+              tucaoInstance.$mount()
+              tucaoParent.appendChild(tucaoInstance.$el)
+
+              tucaoParent.setAttribute('showed', true)
+
+              // spinner disappear
+              // TODO: 更好的销毁组件的方式
+              spinnerParent.removeChild(spinnerParent.firstChild)
+            }
+          }
+        })
     }
   },
 
