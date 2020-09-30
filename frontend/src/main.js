@@ -6,6 +6,8 @@ import router from './router'
 import axios from 'axios'
 import ProgressBar from '@/components/ProgressBar.vue'
 
+import '@/assets/iconfont/iconfont.css'
+
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 

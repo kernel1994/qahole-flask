@@ -12,8 +12,8 @@
         <div class="tucao-text">
           <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
           <div class="ox">
-            <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
-            <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }} | </span>
+            <span class="oo"><i class="iconfont icon-like"></i> {{ tucao.vote_positive }}</span>
+            <span class="xx"><i class="iconfont icon-unlike"></i> {{ tucao.vote_negative }}</span>
           </div>
         </div>
       </li>
@@ -80,5 +80,9 @@ li {
 .tucao-text > .ox {
   padding-top: 10px;
   text-align: right;
+}
+
+.ox span {
+  margin-left: 10px;
 }
 </style>

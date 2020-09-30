@@ -55,7 +55,6 @@ ul {
 a {
   color: #304455;
   text-decoration: none;
-  margin: 0 0.6em;
 }
 
 .header a:hover:not(:first-child) {
@@ -68,6 +67,7 @@ a {
 
 .header a {
   padding-bottom: 3px;
+  margin: 0 0.6em;
 }
 
 .logo {

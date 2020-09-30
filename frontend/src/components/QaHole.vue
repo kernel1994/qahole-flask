@@ -15,13 +15,12 @@
           <div class="comment-text">
             <div class="text" v-html="$convertNewLine(comment.comment_text)"></div>
             <div class="ox">
-              <span class="oo"><span style="color: red;">oo</span> {{ comment.oo }} | </span>
-              <span class="xx"><span style="color: blue;">xx</span> {{ comment.xx }} | </span>
+              <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
+              <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
               <span>
-                <a href="javascript:void(0)" @click="tucao(comment.comment_id)">吐槽 {{ comment.ntucao }}</a>
-              </span>
-              <span :data-comment-tucao-id="comment.comment_id">
-                <!-- spinner mounted here -->
+                <a href="javascript:void(0)" @click="tucao(comment.comment_id)">
+                 <i class="iconfont icon-comment"></i> {{ comment.ntucao }}
+               </a>
               </span>
             </div>
           </div>
@@ -62,7 +61,6 @@ export default {
   methods: {
     tucao (commentParentId) {
       let tucaoParent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
-      let spinnerParent = document.querySelector(`span[data-comment-tucao-id='${commentParentId}']`)
       let showed = tucaoParent.getAttribute('showed')
 
       if (showed === 'true') {
@@ -82,7 +80,7 @@ export default {
       })
 
       spinnerInstance.$mount()
-      spinnerParent.appendChild(spinnerInstance.$el)
+      tucaoParent.appendChild(spinnerInstance.$el)
       // spinner displayed
 
       let url = 'http://localhost:8080/api/tucao/' + commentParentId
@@ -108,7 +106,7 @@ export default {
 
               // spinner disappear
               // TODO: 更好的销毁组件的方式
-              spinnerParent.removeChild(spinnerParent.firstChild)
+              tucaoParent.removeChild(spinnerInstance.$el)
             }
           }
         })
@@ -159,7 +157,7 @@ li:not(:last-child) {
   display: flex;
 
   text-align: left;
-  padding: 15px 10px;
+  padding: 15px 10px 0;
 }
 
 .comment-author {
@@ -195,9 +193,8 @@ li:not(:last-child) {
   text-align: right;
 }
 
-.ox a {
-  color: #333;
-  text-decoration: none;
+.ox span {
+  margin-left: 10px;
 }
 
 .tucao {

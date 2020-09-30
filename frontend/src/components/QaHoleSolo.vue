@@ -13,9 +13,9 @@
       <div class="comment-text">
         <div class="text" v-html="$convertNewLine(comment.comment_text)"></div>
         <div class="ox">
-          <span class="oo"><span style="color: red;">oo</span> {{ comment.oo }} | </span>
-          <span class="xx"><span style="color: blue;">xx</span> {{ comment.xx }} | </span>
-          <span>吐槽 {{ comment.ntucao }}</span>
+          <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
+          <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
+          <span><i class="iconfont icon-comment"></i> {{ comment.ntucao }}</span>
         </div>
       </div>
     </div>
@@ -33,8 +33,8 @@
           <div class="tucao-text">
             <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
             <div class="ox">
-              <span class="oo"><span style="color: red;">oo</span> {{ tucao.vote_positive }} | </span>
-              <span class="xx"><span style="color: blue;">xx</span> {{ tucao.vote_negative }}</span>
+              <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
+              <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
             </div>
           </div>
 
@@ -133,9 +133,8 @@ export default {
   text-align: right;
 }
 
-.ox a {
-  color: #333;
-  text-decoration: none;
+.ox span {
+  margin-left: 10px;
 }
 
 .tucao {
