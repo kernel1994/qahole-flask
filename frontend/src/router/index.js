@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import QaHole from '@/components/QaHole'
 import QaHoleSolo from '@/components/QaHoleSolo'
 
 Vue.use(Router)
+
+const createListView = id => () => import('@/components/createListView').then(m => m.default(id))
 
 export default new Router({
   routes: [
@@ -15,9 +16,9 @@ export default new Router({
     },
 
     {
-      path: '/qahole',
+      path: '/random',
       name: 'QaHole',
-      component: QaHole
+      component: createListView('random')
     },
 
     {
@@ -29,7 +30,7 @@ export default new Router({
     {
       path: '/qa',
       name: 'Qa',
-      component: QaHole,
+      component: createListView('qa'),
       children: [
         {
           path: ':id'
@@ -40,7 +41,7 @@ export default new Router({
     {
       path: '/treehole',
       name: 'Treehole',
-      component: QaHole,
+      component: createListView('treehole'),
       children: [
         {
           path: ':id'

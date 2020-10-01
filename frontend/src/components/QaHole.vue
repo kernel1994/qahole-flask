@@ -7,7 +7,9 @@
           <div class="comment-author">
             <div class="author">{{ comment.author }}</div>
             <div class="cid">
-              <a :href="'#/qahole/' + comment.comment_id"># {{ comment.comment_id }}</a>
+              <router-link :to="'/qahole/' + comment.comment_id">
+                <strong>#</strong> {{ comment.comment_id }}
+              </router-link>
             </div>
             <div class="time">{{ comment.comment_time }}</div>
           </div>
@@ -18,7 +20,7 @@
               <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
               <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
               <span>
-                <a href="javascript:void(0)" @click="tucao(comment.comment_id)">
+                <a href="javascript:void(0)" @click="tucao(comment.comment_id, comment.ntucao)">
                  <i class="iconfont icon-comment"></i> {{ comment.ntucao }}
                </a>
               </span>
@@ -45,6 +47,10 @@ import Spinner from '@/components/Spinner'
 export default {
   name: 'QaHole',
 
+  props: {
+    type: String
+  },
+
   components: {
     Tucao,
     Spinner
@@ -59,9 +65,19 @@ export default {
   },
 
   methods: {
-    tucao (commentParentId) {
+    tucao (commentParentId, nTucao) {
       let tucaoParent = document.querySelector(`div[data-comment-tucao-id='${commentParentId}']`)
       let showed = tucaoParent.getAttribute('showed')
+
+      if (Number(nTucao) === 0 && showed === 'false') {
+        tucaoParent.innerHTML = `<i class="no-tucaos">There are no Tucaos</i>`
+        let i = tucaoParent.querySelector('.no-tucaos')
+        i.style.color = 'gray'
+        i.style.marginLeft = '160px'
+
+        tucaoParent.setAttribute('showed', true)
+        return
+      }
 
       if (showed === 'true') {
         // TODO: 更好的销毁组件的方式
@@ -114,7 +130,18 @@ export default {
   },
 
   mounted () {
-    let url = 'http://localhost:8080/api' + this.$route.path
+    let apiURL = 'http://localhost:8080/api/'
+    let url = null
+    if (this.type === 'qa') {
+      url = apiURL + 'qa'
+    } else if (this.type === 'treehole') {
+      url = apiURL + 'treehole'
+    } else if (this.type === 'random') {
+      url = apiURL + 'random'
+    } else {
+      throw new Error(`invalid type ${this.type}!`)
+    }
+
     this.$bar.start()
     this.$axios
       .get(url)
@@ -204,5 +231,14 @@ li:not(:last-child) {
 .cid a {
   color: #333;
   text-decoration: none;
+}
+
+.cid strong {
+  color: #41b883;
+}
+
+.no-tucaos {
+  color: gray;
+  margin-left: 150px;
 }
 </style>

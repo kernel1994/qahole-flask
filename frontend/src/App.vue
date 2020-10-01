@@ -5,6 +5,7 @@
         <router-link to="/" exact>
           <img class="logo" src="./assets/logo-2018.gif" alt="logo">
         </router-link>
+        <router-link to="/random">随机</router-link>
         <router-link to="/qa">问答</router-link>
         <router-link to="/treehole">树洞</router-link>
         <input type="text" name="search" placeholder="搜索" class="search">
@@ -12,7 +13,7 @@
     </header>
 
     <div class='wrapper'>
-      <router-view :key="$route.path"/>
+      <router-view/>
     </div>
 
   </div>

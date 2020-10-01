@@ -4,15 +4,13 @@
     <div class="comment" v-if="comment">
       <div class="comment-author">
         <div class="author">{{ comment.author }}</div>
-        <div>
-          <div class="cid"># {{ comment.comment_id }}</div>
-          <div class="time">{{ comment.comment_time }}</div>
-        </div>
+        <div class="cid"># {{ comment.comment_id }}</div>
       </div>
 
       <div class="comment-text">
         <div class="text" v-html="$convertNewLine(comment.comment_text)"></div>
         <div class="ox">
+          <div class="time">{{ comment.comment_time }}</div>
           <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
           <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
           <span><i class="iconfont icon-comment"></i> {{ comment.ntucao }}</span>
@@ -33,13 +31,15 @@
           <div class="tucao-text">
             <div class="text" v-html="$convertNewLine(tucao.comment_content)"></div>
             <div class="ox">
-              <span class="oo"><i class="iconfont icon-like"></i> {{ comment.oo }}</span>
-              <span class="xx"><i class="iconfont icon-unlike"></i> {{ comment.xx }}</span>
+              <span class="oo"><i class="iconfont icon-like"></i> {{ tucao.vote_positive }}</span>
+              <span class="xx"><i class="iconfont icon-unlike"></i> {{ tucao.vote_negative }}</span>
             </div>
           </div>
 
         </li>
       </ul>
+
+      <i class="no-tucaos" v-if="tucaos.length === 0">There are no Tucaos</i>
     </div>
 
   </div>
@@ -70,6 +70,7 @@ export default {
           if (data.code === 0) {
             this.comment = data.comment
             this.tucaos = data.tucaos
+            console.log(this.tucaos.length)
 
             this.$bar.finish()
           }
@@ -98,7 +99,7 @@ export default {
   flex-direction: column;
 
   text-align: left;
-  border-bottom: 1px dashed #333;
+  border-bottom: 1px solid #333;
 }
 
 .comment-author {
@@ -110,8 +111,9 @@ export default {
 }
 
 .comment-author .author {
+  flex-grow: 1;
+
   font-size: 20px;
-  margin-right: 10px;
 }
 
 .time, .cid {
@@ -124,13 +126,18 @@ export default {
   flex-direction: column;
 }
 
+.comment .ox {
+  display: flex;
+  align-items: center;
+}
+
+.comment .ox .time {
+  flex-grow: 1;
+}
+
 .text {
   text-align: justify;
   margin-bottom: 10px;
-}
-
-.comment-text > .ox {
-  text-align: right;
 }
 
 .ox span {
@@ -165,5 +172,9 @@ li:not(:last-child) {
 
 .tucao-text > .ox {
   text-align: right;
+}
+
+.tucao .no-tucaos {
+  color: gray;
 }
 </style>

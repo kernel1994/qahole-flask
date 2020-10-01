@@ -9,6 +9,7 @@ from api.resources.qahole_solo import QaHoleSolo
 from api.resources.qa import Qa
 from api.resources.treehole import Treehole
 from api.resources.tucao import Tucao
+from api.resources.random import Random
 
 
 def create_app(test_config=None):
@@ -42,5 +43,6 @@ def create_app(test_config=None):
     api.add_resource(Qa, '/qa', '/qa/<int:comment_id>')
     api.add_resource(Treehole, '/treehole', '/treehole/<int:comment_id>')
     api.add_resource(Tucao, '/tucao/<int:comment_parent>')
+    api.add_resource(Random, '/random', '/random/<int:number>')
 
     return app
