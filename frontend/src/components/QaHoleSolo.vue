@@ -49,6 +49,10 @@
 export default {
   name: 'QaHoleSolo',
 
+  title () {
+    return this.$route.path.slice(1).split('/').join(' | ')
+  },
+
   data () {
     return {
       comment: null,
@@ -70,7 +74,6 @@ export default {
           if (data.code === 0) {
             this.comment = data.comment
             this.tucaos = data.tucaos
-            console.log(this.tucaos.length)
 
             this.$bar.finish()
           }

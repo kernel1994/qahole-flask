@@ -4,9 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import titleMixin from './util/title'
 import ProgressBar from '@/components/ProgressBar.vue'
 
 import '@/assets/iconfont/iconfont.css'
+
+// mixin for handling title
+Vue.mixin(titleMixin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
